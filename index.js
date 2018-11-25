@@ -16,14 +16,14 @@ module.exports = class {
     let packagejson = require(path.join(process.cwd(), 'package.json'))
     this.enabledDeploymentPath = this.getDeploymentPath(this.dna.enabledLocation, packagejson)
     this.runningDeploymentPath = this.getDeploymentPath(this.dna.runningLocation, packagejson)
+    let runningDeploymentJSON = await this.readJSON(this.enabledDeploymentPath)
     try {
-      let runningDeploymentJSON = await this.readJSON(this.enabledDeploymentPath)
       runningDeploymentJSON.port = serverChemical[this.dna.serverPropertyName || 'server'].addess().port
       runningDeploymentJSON.endpoint = '127.0.0.1:' + runningDeploymentJSON.port
       await this.writeJSON(this.runningDeploymentPath, runningDeploymentJSON)
       if (this.dna.log) console.info('wrote', runningDeploymentPath)
     } catch (err) {
-      if (err) console.info('failed to create running deploymentJSON')
+      if (err) console.info(`failed to create ${runningDeploymentJSON}`, err)
     }
   }
   getDeploymentPath (location, packagejson) {
