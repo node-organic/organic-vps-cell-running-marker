@@ -17,7 +17,7 @@ module.exports = class {
     this.runningDeploymentPath = this.getDeploymentPath(this.dna.runningLocation, packagejson)
     try {
       let runningDeploymentJSON = await this.readJSON(this.enabledDeploymentPath)
-      runningDeploymentJSON.port = serverChemical[this.dna.serverPropertyName].addess().port
+      runningDeploymentJSON.port = serverChemical[this.dna.serverPropertyName || 'server'].addess().port
       runningDeploymentJSON.endpoint = '127.0.0.1:' + runningDeploymentJSON.port
       await this.writeJSON(this.runningDeploymentPath, runningDeploymentJSON)
     } catch (err) {
