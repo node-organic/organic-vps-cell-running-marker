@@ -1,6 +1,6 @@
-const copy = require('cp-file')
 const fsReadFile = require('util').promisify(require('fs').readFile)
 const fsWriteFile = require('util').promisify(require('fs').writeFile)
+const path = require('path')
 
 module.exports = class {
   constructor (plasma, dna) {
@@ -23,7 +23,7 @@ module.exports = class {
       await this.writeJSON(this.runningDeploymentPath, runningDeploymentJSON)
       if (this.dna.log) console.info('wrote', runningDeploymentPath)
     } catch (err) {
-      if (err) console.info('failed to copy deploymentJSON')
+      if (err) console.info('failed to create running deploymentJSON')
     }
   }
   getDeploymentPath (location, packagejson) {

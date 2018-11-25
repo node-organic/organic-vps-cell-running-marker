@@ -24,8 +24,5 @@
   "bugs": {
     "url": "https://github.com/node-organic/organic-vps-cell-running-marker/issues"
   },
-  "homepage": "https://github.com/node-organic/organic-vps-cell-running-marker#readme",
-  "dependencies": {
-    "cp-file": "^6.0.0"
-  }
+  "homepage": "https://github.com/node-organic/organic-vps-cell-running-marker#readme"
 }
