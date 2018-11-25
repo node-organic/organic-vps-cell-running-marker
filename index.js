@@ -7,6 +7,7 @@ module.exports = class {
     this.dna = dna
     if (!this.dna.enabled) return console.info('skipping running marker placement')
     if (dna.reactOnServer) {
+      if (dna.log) console.info('waiting for', dna.reactOnServer)
       plasma.on(dna.reactOnServer, this.reactOnServer, this)
     }
     plasma.on(dna.disposeOn || 'kill', this.dispose, this)
@@ -20,6 +21,7 @@ module.exports = class {
       runningDeploymentJSON.port = serverChemical[this.dna.serverPropertyName || 'server'].addess().port
       runningDeploymentJSON.endpoint = '127.0.0.1:' + runningDeploymentJSON.port
       await this.writeJSON(this.runningDeploymentPath, runningDeploymentJSON)
+      if (this.dna.log) console.info('wrote', runningDeploymentPath)
     } catch (err) {
       if (err) console.info('failed to copy deploymentJSON')
     }
