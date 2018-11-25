@@ -18,7 +18,7 @@ module.exports = class {
     this.runningDeploymentPath = this.getDeploymentPath(this.dna.runningLocation, packagejson)
     let runningDeploymentJSON = await this.readJSON(this.enabledDeploymentPath)
     try {
-      runningDeploymentJSON.port = serverChemical[this.dna.serverPropertyName || 'server'].addess().port
+      runningDeploymentJSON.port = serverChemical[this.dna.serverPropertyName || 'server'].address().port
       runningDeploymentJSON.endpoint = '127.0.0.1:' + runningDeploymentJSON.port
       await this.writeJSON(this.runningDeploymentPath, runningDeploymentJSON)
       if (this.dna.log) console.info('wrote', runningDeploymentPath)
