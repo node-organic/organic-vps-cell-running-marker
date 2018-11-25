@@ -1,0 +1,31 @@
+{
+  "name": "organic-vps-cell-running-marker",
+  "version": "1.0.0",
+  "description": "An organelle for leaving a running marker .json file at DNA configurable location. Useful to find presence across cells and etc.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "devDependencies": {
+    "eslint": "^4.18.2",
+    "eslint-config-standard": "^11.0.0",
+    "eslint-plugin-import": "^2.9.0",
+    "eslint-plugin-jest": "^21.24.1",
+    "eslint-plugin-node": "^6.0.1",
+    "eslint-plugin-promise": "^3.7.0",
+    "eslint-plugin-standard": "^3.0.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/node-organic/organic-vps-cell-running-marker.git"
+  },
+  "author": "Boris Filipov",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/node-organic/organic-vps-cell-running-marker/issues"
+  },
+  "homepage": "https://github.com/node-organic/organic-vps-cell-running-marker#readme",
+  "dependencies": {
+    "cp-file": "^6.0.0"
+  }
+}
