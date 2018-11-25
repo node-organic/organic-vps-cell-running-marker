@@ -1,35 +1,49 @@
 const copy = require('cp-file')
+const fsReadFile = require('util').promisify(require('fs').readFile)
+const fsWriteFile = require('util').promisify(require('fs').writeFile)
 
 module.exports = class {
   constructor (plasma, dna) {
     this.dna = dna
-    if (dna.reactOn) {
-      plasma.on(dna.reactOn, this.react, this)
-    } else {
-      this.react()
+    if (!this.dna.enabled) return console.info('skipping running marker placement')
+    if (dna.reactOnServer) {
+      plasma.on(dna.reactOnServer, this.reactOnServer, this)
     }
     plasma.on(dna.disposeOn || 'kill', this.dispose, this)
   }
-  react () {
+  async reactOnServer (serverChemical) {
     let packagejson = require(path.join(process.cwd(), 'package.json'))
+    this.enabledDeploymentPath = this.getDeploymentPath(this.dna.enabledLocation, packagejson)
+    this.runningDeploymentPath = this.getDeploymentPath(this.dna.runningLocation, packagejson)
+    try {
+      let runningDeploymentJSON = await this.readJSON(this.enabledDeploymentPath)
+      runningDeploymentJSON.port = serverChemical[this.dna.serverPropertyName].addess().port
+      runningDeploymentJSON.endpoint = '127.0.0.1:' + runningDeploymentJSON.port
+      await this.writeJSON(this.runningDeploymentPath, runningDeploymentJSON)
+    } catch (err) {
+      if (err) console.info('failed to copy deploymentJSON')
+    }
+  }
+  getDeploymentPath (location, packagejson) {
     let cellName = packagejson.name
     let cellVersion = packagejson.version
-    let cellMode = process.env.CELL_MODE || process.argv[2] || this.dna.CELL_MODE || throw new Error('failed to find CELL_MODE')
-    this.enabledDeploymentPath = path.join(this.dna.enabledLocation, [
+    let cellMode = this.dna.CELL_MODE
+    return path.join(location, [
       cellName,
       cellVersion,
       cellMode
     ].join('-') + '.json')
-    this.runningDeploymentPath = path.join(this.dna.runningLocation, [
-      cellName,
-      cellVersion,
-      cellMode
-    ].join('-') + '.json')
-    copy(this.enabledDeploymentPath, this.runningDeploymentPath)
   }
   dispose () {
     fs.unlink(this.runningDeploymentPath, (err) => {
       if (err) { /*** ignore ***/ }
     })
+  }
+  async readJSON (filepath) {
+    let contents = await fsReadFile(filepath)
+    return JSON.parse(contents)
+  }
+  async writeJSON (filepath, json) {
+    return fsWriteFile(filepath, JSON.stringify(json, null, 2))
   }
 }

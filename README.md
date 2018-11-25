@@ -18,8 +18,8 @@ Include in a server cell DNA via:
   "source": "organic-vps-cell-running-marker",
   "locationEnabled": "/home/node/deployments/enabled",
   "locationRunning": "/home/node/deployments/running",
-  "reactOn": "optional runningOn chemical",
+  "reactOnServer": ChemicalPattern,
+  "serverPropertyName": "server",
   "disposeOn": "optional disposeOn chemical, defaults to 'kill'"
 }
 ```
-
