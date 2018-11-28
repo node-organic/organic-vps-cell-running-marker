@@ -1,6 +1,7 @@
 const fsReadFile = require('util').promisify(require('fs').readFile)
 const fsWriteFile = require('util').promisify(require('fs').writeFile)
 const path = require('path')
+const fs = require('fs')
 
 module.exports = class {
   constructor (plasma, dna) {
@@ -15,30 +16,32 @@ module.exports = class {
   async reactOnServer (serverChemical) {
     let packagejson = require(path.join(process.cwd(), 'package.json'))
     this.enabledDeploymentPath = this.getDeploymentPath(this.dna.enabledLocation, packagejson)
-    this.runningDeploymentPath = this.getDeploymentPath(this.dna.runningLocation, packagejson)
+    this.runningDeploymentPath = this.getDeploymentPath(this.dna.runningLocation, packagejson, this.dna.cellIndex)
     let runningDeploymentJSON = await this.readJSON(this.enabledDeploymentPath)
     try {
       runningDeploymentJSON.port = serverChemical[this.dna.serverPropertyName || 'server'].address().port
       runningDeploymentJSON.endpoint = '127.0.0.1:' + runningDeploymentJSON.port
+      runningDeploymentJSON.index = this.dna.index
       await this.writeJSON(this.runningDeploymentPath, runningDeploymentJSON)
       if (this.dna.log) console.info('wrote', this.runningDeploymentPath)
     } catch (err) {
       if (err) console.info(`failed to create ${runningDeploymentJSON}`, err)
     }
   }
-  getDeploymentPath (location, packagejson) {
+  getDeploymentPath (location, packagejson, index) {
     let cellName = packagejson.name
     let cellVersion = packagejson.version
-    let cellMode = this.dna.CELL_MODE
+    let cellMode = this.dna.cellMode
     return path.join(location, [
       cellName,
       cellVersion,
-      cellMode
-    ].join('-') + '.json')
+      cellMode,
+      index || ''
+    ].filter(v => v).join('-') + '.json')
   }
   dispose () {
     fs.unlink(this.runningDeploymentPath, (err) => {
-      if (err) { /*** ignore ***/ }
+      if (err) { /** ignore **/ }
     })
   }
   async readJSON (filepath) {

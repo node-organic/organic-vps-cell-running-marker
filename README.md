@@ -20,6 +20,8 @@ Include in a server cell DNA via:
   "locationRunning": "/home/node/deployments/running",
   "reactOnServer": ChemicalPattern,
   "serverPropertyName": "server",
-  "disposeOn": "optional disposeOn chemical, defaults to 'kill'"
+  "disposeOn": "optional disposeOn chemical, defaults to 'kill'",
+  "cellMode": "_production",
+  "cellIndex": "0"
 }
 ```
