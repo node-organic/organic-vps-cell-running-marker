@@ -1,6 +1,6 @@
 {
   "name": "organic-vps-cell-running-marker",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "An organelle for leaving a running marker .json file at DNA configurable location. Useful to find presence across cells and etc.",
   "main": "index.js",
   "scripts": {
