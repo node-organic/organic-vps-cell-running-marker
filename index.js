@@ -22,6 +22,7 @@ module.exports = class {
       runningDeploymentJSON.port = serverChemical[this.dna.serverPropertyName || 'server'].address().port
       runningDeploymentJSON.endpoint = '127.0.0.1:' + runningDeploymentJSON.port
       runningDeploymentJSON.index = this.dna.index
+      runningDeploymentJSON.pid = process.pid
       await this.writeJSON(this.runningDeploymentPath, runningDeploymentJSON)
       if (this.dna.log) console.info('wrote', this.runningDeploymentPath)
     } catch (err) {
